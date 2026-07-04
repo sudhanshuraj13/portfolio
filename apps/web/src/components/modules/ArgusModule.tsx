@@ -75,20 +75,12 @@ export function ArgusModule() {
             A.R.G.U.S. Agentic Web Automation Engine
           </h2>
         </div>
-        <p className="text-xs text-dim font-mono mb-3">
+        <p className="text-xs text-dim font-mono mb-3 leading-relaxed">
           Autonomous stateful browser assistant powered by LangGraph. Simulates
           intent extraction, web search, and action token generation.
+          <br /><br />
+          <span className="text-primary font-semibold">System Context:</span> The core execution engine powering A.R.G.U.S. It utilizes LangGraph state loops to execute unstructured browsing tasks, featuring a RiskClassifier protocol that intercepts high-risk commands for manual approval.
         </p>
-
-        {/* System Context Block */}
-        <div className="bg-surface p-3 border border-border/50 rounded flex flex-col gap-2 mt-2">
-          <div className="text-xs font-bold text-primary uppercase tracking-wide">
-            Agentic Web Automation Assistant
-          </div>
-          <div className="text-[10px] text-dim font-mono leading-relaxed">
-            The core execution engine powering A.R.G.U.S. It utilizes LangGraph state loops to execute unstructured browsing tasks, featuring a RiskClassifier protocol that intercepts high-risk commands for manual approval.
-          </div>
-        </div>
       </div>
 
       {/* Input Area */}

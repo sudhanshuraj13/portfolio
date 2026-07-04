@@ -47,23 +47,14 @@ export function RagSandboxModule() {
             MICROSERVICE 03
           </span>
           <h2 className="text-sm font-semibold text-primary">
-            Hybrid RAG Pipeline
+            SIH Assistant — Smart India Hackathon RAG Chatbot
           </h2>
         </div>
-        <p className="text-xs text-dim font-mono mb-3">
-          Local hybrid search architecture. Combines fast regex exact matching with
-          semantic algorithmic scoring for robust retrieval without external API costs.
+        <p className="text-xs text-dim font-mono mb-3 leading-relaxed">
+          A production-ready AI chatbot designed to help users query and understand problem statements, themes, and organizations from the Smart India Hackathon (SIH). Built using a Retrieval-Augmented Generation (RAG) architecture, it leverages semantic search and Large Language Models to provide highly accurate, grounded answers.
+          <br /><br />
+          <span className="text-primary font-semibold">System Context:</span> A hybrid retrieval strategy combining regex-based exact problem-ID matching with semantic vector search to deliver highly precise, context-aware answers without external API costs.
         </p>
-
-        {/* System Context Block */}
-        <div className="bg-surface p-3 border border-border/50 rounded flex flex-col gap-2 mt-2">
-          <div className="text-xs font-bold text-primary uppercase tracking-wide">
-            Hybrid Search Pipeline (SIH System)
-          </div>
-          <div className="text-[10px] text-dim font-mono leading-relaxed">
-            A hybrid retrieval strategy combining regex-based exact problem-ID matching with semantic vector search to deliver highly precise, context-aware answers without external API costs.
-          </div>
-        </div>
       </div>
 
       {/* Input Area */}

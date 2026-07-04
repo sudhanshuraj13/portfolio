@@ -48,23 +48,14 @@ export function LlmGatewayModule() {
             MICROSERVICE 02
           </span>
           <h2 className="text-sm font-semibold text-primary">
-            Multi-Provider LLM Gateway Proxy
+            YouTube AI Focus Agent
           </h2>
         </div>
-        <p className="text-xs text-dim font-mono mb-3">
-          Headless reverse proxy with automatic failover routing. Forces a 429
-          Rate Limit on Groq and recovers via Gemini/Mistral.
+        <p className="text-xs text-dim font-mono mb-3 leading-relaxed">
+          Distraction reduction for YouTube using AI classification guided by custom keyword intent lists. Every visible video title is sent to an AI provider and classified as EDUCATIONAL or DISTRACTING. No instant local keyword filtering – keywords only steer AI behavior.
+          <br /><br />
+          <span className="text-primary font-semibold">System Context:</span> A headless reverse proxy routing architecture. It dynamically routes inference requests across multiple providers based on latency and rate-limit tracking, ensuring uninterrupted AI classification.
         </p>
-
-        {/* System Context Block */}
-        <div className="bg-surface p-3 border border-border/50 rounded flex flex-col gap-2 mt-2">
-          <div className="text-xs font-bold text-primary uppercase tracking-wide">
-            Multi-Provider Failover Gateway
-          </div>
-          <div className="text-[10px] text-dim font-mono leading-relaxed">
-            A headless reverse proxy routing architecture. It dynamically routes inference requests across multiple providers based on latency and rate-limit tracking, ensuring uninterrupted AI classification.
-          </div>
-        </div>
       </div>
 
       {/* Input Area */}

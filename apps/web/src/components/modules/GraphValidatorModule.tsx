@@ -88,27 +88,18 @@ export function GraphValidatorModule() {
       {/* Module Header */}
       <div className="border-b border-border px-4 py-3 bg-base/50">
         <div className="flex items-center gap-2 mb-1">
-          <span className="text-[10px] font-mono text-primary bg-primary/10 px-1.5 py-0.5 rounded">
+          <span className="text-[10px] font-mono text-error bg-error/10 px-1.5 py-0.5 rounded">
             MICROSERVICE 04
           </span>
           <h2 className="text-sm font-semibold text-primary">
-            Graph Validation Runtime (HR Workflow Designer)
+            HR Workflow Designer
           </h2>
         </div>
-        <p className="text-xs text-dim font-mono mb-3">
-          DFS-based DAG validation engine. Detects cycles in directed workflow
-          graphs with step-by-step traversal logging.
+        <p className="text-xs text-dim font-mono mb-3 leading-relaxed">
+          A React Flow canvas builder that lets HR admins place steps, connect them, configure each step, and run the workflow through a mock simulation. Features client-side validation for missing links, invalid Start/End placement, and cycles.
+          <br /><br />
+          <span className="text-primary font-semibold">System Context:</span> A deterministic backend engine that ingests complex adjacency lists and executes Depth-First Search (DFS) algorithms to detect infinite data cycles and invalid state placements.
         </p>
-
-        {/* System Context Block */}
-        <div className="bg-surface p-3 border border-border/50 rounded flex flex-col gap-2 mt-2">
-          <div className="text-xs font-bold text-primary uppercase tracking-wide">
-            Algorithmic Validation Engine
-          </div>
-          <div className="text-[10px] text-dim font-mono leading-relaxed">
-            A deterministic backend engine that ingests complex adjacency lists and executes Depth-First Search (DFS) algorithms to detect infinite data cycles and invalid state placements.
-          </div>
-        </div>
       </div>
 
       {/* Controls */}
