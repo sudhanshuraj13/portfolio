@@ -1,41 +1,59 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # dependencies
-/node_modules
-/.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
-
-# testing
-/coverage
+node_modules/
+.pnpm-store/
 
 # next.js
-/.next/
-/out/
+.next/
+out/
+build/
+apps/web/.next/
+apps/web/out/
 
-# production
-/build
+# production & builds
+dist/
+lib/
+*.tsbuildinfo
 
-# misc
+# env files (NEVER COMMIT)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env
+apps/server/.env
+apps/web/.env
+
+# Prisma
+# ignore the generated local sqlite databases if any
+*.db
+*.db-journal
+# note: we do NOT ignore prisma schema and migrations, those should be pushed!
+
+# IDE and OS files
 .DS_Store
-*.pem
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.vscode/
+.idea/
 
-# debug
+# debug & logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
+pnpm-debug.log*
+*.log
 
-# env files (can opt-in for committing if needed)
-.env*
+# testing and coverage
+coverage/
+.nyc_output/
 
-# vercel
-.vercel
-
-# typescript
-*.tsbuildinfo
-next-env.d.ts
+# misc
+*.pem
+.archive/
+.turbo/
+turbo.log
