@@ -17,7 +17,31 @@ export function ArgusModule() {
   const [isExecuting, setIsExecuting] = useState(false);
   const [result, setResult] = useState<QueueResponse | null>(null);
   const artifacts = useLogStore((s) => s.artifacts);
+  const addArtifact = useLogStore((s) => s.addArtifact);
   const artifact = result?.trace_id ? artifacts[result.trace_id] : null;
+
+  const handleApprove = async () => {
+    if (!result?.trace_id) return;
+    setIsExecuting(true);
+    const currentTraceId = result.trace_id;
+    setResult(null); 
+    addArtifact(currentTraceId, null); // Clear the old artifact
+
+    try {
+      const res = await fetch("/api/argus/approve", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ command, trace_id: currentTraceId }),
+      });
+      const data = await res.json();
+      setResult(data);
+    } catch {
+      setResult(null);
+    } finally {
+      setIsExecuting(false);
+    }
+  };
+
   const handleExecute = async () => {
     if (!command.trim() || isExecuting) return;
 
@@ -115,12 +139,46 @@ export function ArgusModule() {
             </div>
             <div className="p-3">
               {artifact.status === "APPROVAL_REQUIRED" ? (
-                <div className="border border-amber bg-amber/10 text-amber p-3 rounded font-mono text-xs flex flex-col gap-2">
+                <div className="border border-amber bg-amber/10 text-amber p-3 rounded font-mono text-xs flex flex-col gap-3">
                   <div className="font-bold flex items-center gap-2">
                     <AlertTriangle size={14} /> Execution Paused: Manual Approval Required
                   </div>
                   <div className="opacity-80">Reason: {artifact.reason}</div>
                   <div className="opacity-80">Risk Level: {artifact.risk_level}</div>
+                  <div className="flex items-center gap-2 mt-2">
+                    <button 
+                      onClick={handleApprove}
+                      disabled={isExecuting}
+                      className="px-4 py-1.5 bg-terminal-green/20 border border-terminal-green/50 text-terminal-green rounded hover:bg-terminal-green/30 transition-colors disabled:opacity-50"
+                    >
+                      {isExecuting ? "Processing..." : "Approve Transaction"}
+                    </button>
+                    <button 
+                      disabled={isExecuting}
+                      onClick={() => setResult(null)}
+                      className="px-4 py-1.5 bg-error/20 border border-error/50 text-error rounded hover:bg-error/30 transition-colors disabled:opacity-50"
+                    >
+                      Deny
+                    </button>
+                  </div>
+                </div>
+              ) : artifact.status === "BOOKED" ? (
+                <div className="border border-info bg-info/10 text-primary p-3 rounded font-mono text-xs flex flex-col gap-2">
+                  <div className="font-bold text-info flex items-center gap-2 mb-2">
+                    ✓ Transaction Authorized & Completed
+                  </div>
+                  <div className="flex justify-between border-b border-border/50 pb-1">
+                    <span className="text-dim">Item:</span>
+                    <span>{artifact.item}</span>
+                  </div>
+                  <div className="flex justify-between border-b border-border/50 pb-1">
+                    <span className="text-dim">Payment Method:</span>
+                    <span>{artifact.payment}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-dim">Delivery ETA:</span>
+                    <span className="text-terminal-green">{artifact.delivery_eta}</span>
+                  </div>
                 </div>
               ) : (
                 <pre className="text-[10px] font-mono text-primary whitespace-pre-wrap bg-base p-2 rounded border border-border/50 overflow-x-auto">

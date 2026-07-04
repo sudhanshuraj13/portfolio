@@ -42,3 +42,31 @@ export async function argusWorkerLogic(trace_id: string, payload: { command: str
     throw err;
   }
 }
+
+export async function argusApproveWorkerLogic(trace_id: string, payload: { command: string }) {
+  const startTime = Date.now();
+  try {
+    await recordSystemLog(trace_id, "INFO", "ARGUS", "USER_OVERRIDE", "Manual execution approval received. Resuming transaction...", 0, "SUCCESS");
+    await recordSystemLog(trace_id, "INFO", "TRANSACTION_ENGINE", "SECURE_CHECKOUT", "Initiating secure checkout sequence for Amazon cart...", 50, "SUCCESS");
+    await recordSystemLog(trace_id, "INFO", "TRANSACTION_ENGINE", "PAYMENT_METHOD", "Applying default payment method: Cash on Delivery...", 100, "SUCCESS");
+    
+    // Simulate booking delay
+    await new Promise(resolve => setTimeout(resolve, 800));
+
+    await recordSystemLog(trace_id, "SUCCESS", "TRANSACTION_ENGINE", "ORDER_CONFIRMED", "Order placed successfully! Extracting delivery ETA...", 850, "SUCCESS");
+    
+    const elapsed = Date.now() - startTime;
+    await recordSystemLog(trace_id, "SUCCESS", "ARGUS", "COMPLETE", `Automation completed in ${elapsed}ms.`, elapsed, "SUCCESS");
+
+    return {
+      status: "BOOKED",
+      item: "Blue shirt (Amazon)",
+      payment: "Cash on Delivery",
+      delivery_eta: "4-5 business days",
+      execution_time_ms: elapsed
+    };
+  } catch (err: any) {
+    await recordSystemLog(trace_id, "ERROR", "ARGUS", "FATAL_ERROR", `Approve worker failed: ${err.message}`, Date.now() - startTime, "ERROR");
+    throw err;
+  }
+}

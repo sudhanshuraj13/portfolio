@@ -23,4 +23,24 @@ export async function argusRoutes(app: FastifyInstance) {
       message: "Job dispatched to ai-execution-queue"
     });
   });
+
+  app.post("/approve", async (request, reply) => {
+    const { command, trace_id } = request.body as { command: string, trace_id: string };
+
+    if (!trace_id) {
+      return reply.status(400).send({ error: "Trace ID is required" });
+    }
+
+    await executionQueue.add("argus-job", {
+      type: "ARGUS_APPROVE",
+      trace_id,
+      payload: { command }
+    });
+
+    return reply.send({
+      status: "QUEUED",
+      trace_id,
+      message: "Approval job dispatched to ai-execution-queue"
+    });
+  });
 }

@@ -25,6 +25,9 @@ export const executionWorker = new Worker(
     switch (type) {
       case "ARGUS":
         return await argusWorkerLogic(trace_id, payload);
+      case "ARGUS_APPROVE":
+        const { argusApproveWorkerLogic } = await import("./microservices/argusWorker.js");
+        return await argusApproveWorkerLogic(trace_id, payload);
       case "LLM_GATEWAY":
         return await gatewayWorkerLogic(trace_id, payload);
       case "RAG_SANDBOX":
