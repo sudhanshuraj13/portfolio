@@ -9,9 +9,10 @@ const dataPath = resolve(__dirname, "../../../data/sih_problems.json");
 interface SihProblem {
   id: string;
   title: string;
-  description: string;
+  description?: string;
+  full_description?: string;
   category: string;
-  keywords: string[];
+  keywords?: string[];
 }
 
 export async function ragWorkerLogic(trace_id: string, payload: { query: string }) {
@@ -60,7 +61,7 @@ export async function ragWorkerLogic(trace_id: string, payload: { query: string 
     for (const doc of parsed) {
       const description = doc.full_description || doc.description || "";
       const contentWords = description.toLowerCase().split(/\s+/);
-      const wordOverlap = queryWords.filter(qw => contentWords.some(cw => cw.includes(qw))).length;
+      const wordOverlap = queryWords.filter(qw => contentWords.some((cw: string) => cw.includes(qw))).length;
       
       const score = wordOverlap / Math.max(queryWords.length, 1);
       if (score > 0.1) {
