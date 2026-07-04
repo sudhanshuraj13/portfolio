@@ -10,7 +10,7 @@ interface QueueResponse {
 }
 
 export function LlmGatewayModule() {
-  const [prompt, setPrompt] = useState("");
+  const [prompt, setPrompt] = useState("Summarize the benefits of event-driven microservices architecture.");
   const [isRouting, setIsRouting] = useState(false);
   const [result, setResult] = useState<QueueResponse | null>(null);
 
@@ -89,6 +89,15 @@ export function LlmGatewayModule() {
               <Send size={12} />
             )}
             Dispatch Job
+          </button>
+        </div>
+        <div className="flex items-center gap-2 text-[10px] text-dim font-mono pt-1">
+          <span>Quick Example:</span>
+          <button 
+            onClick={() => setPrompt("Summarize the benefits of event-driven microservices architecture.")}
+            className="text-muted hover:text-primary transition-colors underline decoration-border underline-offset-2"
+          >
+            &quot;Summarize the benefits of event-driven microservices architecture.&quot;
           </button>
         </div>
       </div>

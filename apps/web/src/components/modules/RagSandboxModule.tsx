@@ -91,6 +91,15 @@ export function RagSandboxModule() {
             Dispatch Job
           </button>
         </div>
+        <div className="flex items-center gap-2 text-[10px] text-dim font-mono pt-1">
+          <span>Quick Example:</span>
+          <button 
+            onClick={() => setQuery("AI diet plans for Ayurvedic treatment")}
+            className="text-muted hover:text-primary transition-colors underline decoration-border underline-offset-2"
+          >
+            &quot;AI diet plans for Ayurvedic treatment&quot;
+          </button>
+        </div>
       </div>
 
       {/* Result Area */}

@@ -93,6 +93,15 @@ export function ArgusModule() {
             Dispatch Job
           </button>
         </div>
+        <div className="flex items-center gap-2 text-[10px] text-dim font-mono pt-1">
+          <span>Quick Example:</span>
+          <button 
+            onClick={() => setCommand("Check the price of a blue shirt on Amazon and buy it")}
+            className="text-muted hover:text-primary transition-colors underline decoration-border underline-offset-2"
+          >
+            &quot;Check the price of a blue shirt on Amazon and buy it&quot;
+          </button>
+        </div>
       </div>
 
       {/* Result Area */}
