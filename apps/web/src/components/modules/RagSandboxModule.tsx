@@ -10,7 +10,7 @@ interface QueueResponse {
 }
 
 export function RagSandboxModule() {
-  const [query, setQuery] = useState("AI diet plans for Ayurvedic treatment");
+  const [query, setQuery] = useState("Smart early warning system for water-borne diseases");
   const [isSearching, setIsSearching] = useState(false);
   const [result, setResult] = useState<QueueResponse | null>(null);
 
@@ -94,10 +94,10 @@ export function RagSandboxModule() {
         <div className="flex items-center gap-2 text-[10px] text-dim font-mono pt-1">
           <span>Quick Example:</span>
           <button 
-            onClick={() => setQuery("AI diet plans for Ayurvedic treatment")}
+            onClick={() => setQuery("Smart early warning system for water-borne diseases")}
             className="text-muted hover:text-primary transition-colors underline decoration-border underline-offset-2"
           >
-            &quot;AI diet plans for Ayurvedic treatment&quot;
+            &quot;Smart early warning system for water-borne diseases&quot;
           </button>
         </div>
       </div>
