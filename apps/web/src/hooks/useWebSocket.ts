@@ -3,10 +3,17 @@
 import { useEffect, useRef, useCallback } from "react";
 import { useLogStore } from "@/store/useLogStore";
 
-const WS_URL =
-  typeof window !== "undefined"
-    ? (process.env.NEXT_PUBLIC_WS_URL || `ws://${window.location.hostname}:4000/ws`)
-    : "ws://localhost:4000/ws";
+const getWsUrl = () => {
+  if (typeof window === "undefined") return "ws://localhost:4000/ws";
+  const raw = process.env.NEXT_PUBLIC_WS_URL;
+  if (!raw) return `ws://${window.location.hostname}:4000/ws`;
+  
+  // Clean up trailing slash and ensure it ends with /ws
+  const clean = raw.endsWith('/') ? raw.slice(0, -1) : raw;
+  return clean.endsWith('/ws') ? clean : `${clean}/ws`;
+};
+
+const WS_URL = getWsUrl();
 
 const MAX_RECONNECT_DELAY = 10000;
 const BASE_RECONNECT_DELAY = 1000;
@@ -54,10 +61,12 @@ export function useWebSocket() {
         reconnectTimerRef.current = setTimeout(connect, delay);
       };
 
-      ws.onerror = () => {
+      ws.onerror = (event) => {
+        console.error("[WS] Connection Error:", event);
         ws.close();
       };
-    } catch {
+    } catch (error) {
+      console.error("[WS] Failed to instantiate WebSocket:", error);
       // Connection failed, will retry via onclose
     }
   }, [addLog, setWsConnected]);
