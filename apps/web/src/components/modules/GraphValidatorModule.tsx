@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Play, ToggleLeft, ToggleRight, Loader2, Code } from "lucide-react";
+import { Play, ToggleLeft, ToggleRight, Loader2, Code, ShieldCheck, ShieldAlert } from "lucide-react";
+import { useLogStore } from "@/store/useLogStore";
 
 const DEFAULT_VALID_DAG = JSON.stringify(
   {
@@ -41,6 +42,8 @@ export function GraphValidatorModule() {
   const [isValidating, setIsValidating] = useState(false);
   const [result, setResult] = useState<QueueResponse | null>(null);
   const [jsonError, setJsonError] = useState<string | null>(null);
+  const artifacts = useLogStore((s) => s.artifacts);
+  const artifact = result?.trace_id ? artifacts[result.trace_id] : null;
 
   // Toggle between valid and broken graph
   useEffect(() => {
@@ -97,15 +100,14 @@ export function GraphValidatorModule() {
           graphs with step-by-step traversal logging.
         </p>
 
-        {/* System Topology Block & GitHub Link */}
-        <div className="bg-surface p-2 border border-border/50 rounded flex flex-col gap-2">
-          <div className="text-[10px] text-dim font-mono">
-            System Context: This microservice executes as a decoupled background worker via BullMQ.
+        {/* System Context Block */}
+        <div className="bg-surface p-3 border border-border/50 rounded flex flex-col gap-2 mt-2">
+          <div className="text-xs font-bold text-primary uppercase tracking-wide">
+            Algorithmic Validation Engine
           </div>
-          <a href="https://github.com/sudhanshuraj13/hr-workflow-designer" className="w-fit flex items-center gap-1.5 px-2 py-1 bg-surface-alt border border-border rounded text-[10px] font-mono text-muted hover:text-primary transition-colors">
-            <Code size={12} />
-            [ VIEW SOURCE ON GITHUB ]
-          </a>
+          <div className="text-[10px] text-dim font-mono leading-relaxed">
+            A deterministic backend engine that ingests complex adjacency lists and executes Depth-First Search (DFS) algorithms to detect infinite data cycles and invalid state placements.
+          </div>
         </div>
       </div>
 
@@ -176,25 +178,34 @@ export function GraphValidatorModule() {
             </span>
           </div>
           <div className="flex-1 overflow-y-auto p-3 flex flex-col gap-4">
-            {result && (
-              <div className="border border-terminal-green/30 bg-terminal-green/5 rounded p-3">
-                <div className="text-xs font-semibold text-terminal-green uppercase tracking-wider mb-2">
-                  ✓ {result.message}
+            {artifact ? (
+              <div className="border border-border bg-surface-alt rounded flex flex-col mt-4">
+                <div className="px-3 py-1.5 border-b border-border bg-surface flex justify-between items-center">
+                  <span className="text-[10px] font-mono text-dim uppercase tracking-wider">Execution Artifact</span>
+                  <span className="text-[10px] font-mono text-terminal-green uppercase">Job Complete</span>
                 </div>
-                <div className="text-xs font-mono text-primary flex gap-2 items-center">
-                  <span className="text-dim">Trace ID:</span>
-                  <span className="bg-surface px-1.5 py-0.5 rounded border border-border/50 text-terminal-green font-bold">
-                    {result.trace_id}
-                  </span>
+                <div className="p-3">
+                  <div className={`border p-3 rounded font-mono text-xs flex flex-col gap-2 ${
+                    artifact.valid 
+                      ? "border-terminal-green/30 bg-terminal-green/5 text-terminal-green" 
+                      : "border-error/30 bg-error/5 text-error"
+                  }`}>
+                    <div className="font-bold flex items-center gap-2 mb-2">
+                      {artifact.valid ? <ShieldCheck size={14} /> : <ShieldAlert size={14} />} 
+                      Validation Result: {artifact.valid ? "PASSED" : "FAILED"}
+                    </div>
+                    <pre className="text-[10px] font-mono text-primary whitespace-pre-wrap bg-base p-2 rounded border border-border/50">
+                      {JSON.stringify(artifact, null, 2)}
+                    </pre>
+                  </div>
                 </div>
-                <p className="text-[10px] text-dim font-mono mt-3">
-                  This task is now executing asynchronously in the BullMQ worker pool. 
-                  Watch the Live Traces panel below to monitor the DFS traversal algorithm step-by-step.
-                </p>
               </div>
-            )}
-
-            {!isValidating && !result && (
+            ) : result ? (
+              <div className="flex flex-col items-center justify-center py-10 gap-3 border border-border/30 rounded bg-base/30 mt-4">
+                <Loader2 size={24} className="animate-spin text-primary" />
+                <span className="text-xs font-mono text-dim animate-pulse">Running DFS graph validation...</span>
+              </div>
+            ) : (
               <div className="text-xs text-dim font-mono text-center py-8">
                 Click Dispatch Job to run the DFS traversal algorithm on the queue.
                 <br />

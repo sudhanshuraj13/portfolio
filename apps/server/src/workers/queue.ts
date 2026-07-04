@@ -38,8 +38,13 @@ export const executionWorker = new Worker(
   { connection: connection as any }
 );
 
-executionWorker.on("completed", (job) => {
+import { broadcastArtifact } from "../broadcast.js";
+
+executionWorker.on("completed", (job, result) => {
   console.log(`[QUEUE] Job ${job.id} (Trace: ${job.data.trace_id}) completed successfully.`);
+  if (job.data.trace_id && result) {
+    broadcastArtifact(job.data.trace_id, result);
+  }
 });
 
 executionWorker.on("failed", (job, err) => {

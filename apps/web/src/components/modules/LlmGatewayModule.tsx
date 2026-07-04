@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Send, Loader2, Code } from "lucide-react";
+import { Send, Loader2, Code, Bot } from "lucide-react";
+import { useLogStore } from "@/store/useLogStore";
+import ReactMarkdown from "react-markdown";
 
 interface QueueResponse {
   status: string;
@@ -13,6 +15,8 @@ export function LlmGatewayModule() {
   const [prompt, setPrompt] = useState("Summarize the benefits of event-driven microservices architecture.");
   const [isRouting, setIsRouting] = useState(false);
   const [result, setResult] = useState<QueueResponse | null>(null);
+  const artifacts = useLogStore((s) => s.artifacts);
+  const artifact = result?.trace_id ? artifacts[result.trace_id] : null;
 
   const handleSubmit = async () => {
     if (!prompt.trim() || isRouting) return;
@@ -52,15 +56,14 @@ export function LlmGatewayModule() {
           Rate Limit on Groq and recovers via Gemini/Mistral.
         </p>
 
-        {/* System Topology Block & GitHub Link */}
-        <div className="bg-surface p-2 border border-border/50 rounded flex flex-col gap-2">
-          <div className="text-[10px] text-dim font-mono">
-            System Context: This microservice executes as a decoupled background worker via BullMQ.
+        {/* System Context Block */}
+        <div className="bg-surface p-3 border border-border/50 rounded flex flex-col gap-2 mt-2">
+          <div className="text-xs font-bold text-primary uppercase tracking-wide">
+            Multi-Provider Failover Gateway
           </div>
-          <a href="https://github.com/sudhanshuraj13/Edu-filter" className="w-fit flex items-center gap-1.5 px-2 py-1 bg-surface-alt border border-border rounded text-[10px] font-mono text-muted hover:text-primary transition-colors">
-            <Code size={12} />
-            [ VIEW SOURCE ON GITHUB ]
-          </a>
+          <div className="text-[10px] text-dim font-mono leading-relaxed">
+            A headless reverse proxy routing architecture. It dynamically routes inference requests across multiple providers based on latency and rate-limit tracking, ensuring uninterrupted AI classification.
+          </div>
         </div>
       </div>
 
@@ -104,27 +107,29 @@ export function LlmGatewayModule() {
 
       {/* Result Area */}
       <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
-        {result && (
-          <div className="border border-terminal-green/30 bg-terminal-green/5 rounded p-3">
-            <div className="text-xs font-semibold text-terminal-green uppercase tracking-wider mb-2">
-              ✓ {result.message}
+        {artifact ? (
+          <div className="border border-border bg-surface-alt rounded flex flex-col">
+            <div className="px-3 py-1.5 border-b border-border bg-surface flex justify-between items-center">
+              <span className="text-[10px] font-mono text-dim uppercase tracking-wider">Execution Artifact</span>
+              <span className="text-[10px] font-mono text-terminal-green uppercase">Job Complete</span>
             </div>
-            <div className="text-xs font-mono text-primary flex gap-2 items-center">
-              <span className="text-dim">Trace ID:</span>
-              <span className="bg-surface px-1.5 py-0.5 rounded border border-border/50 text-terminal-green font-bold">
-                {result.trace_id}
-              </span>
+            <div className="p-3 flex flex-col gap-3">
+              <div className="flex items-center gap-1.5 self-start px-2 py-1 bg-amber/10 border border-amber/30 rounded text-[10px] font-mono text-amber">
+                <Bot size={12} /> Provider: {artifact.provider_used}
+              </div>
+              <div className="text-xs text-primary leading-relaxed bg-base p-3 rounded border border-border/50 prose prose-invert prose-sm max-w-none">
+                <ReactMarkdown>{artifact.response_text}</ReactMarkdown>
+              </div>
             </div>
-            <p className="text-[10px] text-dim font-mono mt-3">
-              This task is now executing asynchronously in the BullMQ worker pool. 
-              Watch the Live Traces panel below to monitor the failover sequence in real-time.
-            </p>
           </div>
-        )}
-
-        {!isRouting && !result && (
+        ) : result ? (
+          <div className="flex flex-col items-center justify-center py-10 gap-3 border border-border/30 rounded bg-base/30">
+            <Loader2 size={24} className="animate-spin text-amber" />
+            <span className="text-xs font-mono text-dim animate-pulse">Routing inference job...</span>
+          </div>
+        ) : (
           <div className="text-xs text-dim font-mono text-center py-8">
-            Enter a prompt and dispatch the job to the worker queue.
+            Awaiting Execution...
           </div>
         )}
       </div>

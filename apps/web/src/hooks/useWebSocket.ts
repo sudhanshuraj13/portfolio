@@ -23,6 +23,7 @@ export function useWebSocket() {
   const reconnectAttemptRef = useRef(0);
   const reconnectTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const addLog = useLogStore((s) => s.addLog);
+  const addArtifact = useLogStore((s) => s.addArtifact);
   const setWsConnected = useLogStore((s) => s.setWsConnected);
 
   const connect = useCallback(() => {
@@ -40,7 +41,9 @@ export function useWebSocket() {
       ws.onmessage = (event) => {
         try {
           const data = JSON.parse(event.data);
-          if (data.timestamp && data.level && data.source && data.message) {
+          if (data.type === "ARTIFACT" && data.trace_id) {
+            addArtifact(data.trace_id, data.payload);
+          } else if (data.timestamp && data.level && data.source && data.message) {
             addLog(data);
           }
         } catch {

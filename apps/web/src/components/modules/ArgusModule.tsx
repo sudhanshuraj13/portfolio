@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Play, Loader2, Code } from "lucide-react";
+import { Play, Loader2, Code, AlertTriangle } from "lucide-react";
+import { useLogStore } from "@/store/useLogStore";
 
 interface QueueResponse {
   status: string;
@@ -15,7 +16,8 @@ export function ArgusModule() {
   );
   const [isExecuting, setIsExecuting] = useState(false);
   const [result, setResult] = useState<QueueResponse | null>(null);
-
+  const artifacts = useLogStore((s) => s.artifacts);
+  const artifact = result?.trace_id ? artifacts[result.trace_id] : null;
   const handleExecute = async () => {
     if (!command.trim() || isExecuting) return;
 
@@ -54,15 +56,14 @@ export function ArgusModule() {
           intent extraction, web search, and action token generation.
         </p>
 
-        {/* System Topology Block & GitHub Link */}
-        <div className="bg-surface p-2 border border-border/50 rounded flex flex-col gap-2">
-          <div className="text-[10px] text-dim font-mono">
-            System Context: This microservice executes as a decoupled background worker via BullMQ.
+        {/* System Context Block */}
+        <div className="bg-surface p-3 border border-border/50 rounded flex flex-col gap-2 mt-2">
+          <div className="text-xs font-bold text-primary uppercase tracking-wide">
+            Agentic Web Automation Assistant
           </div>
-          <a href="https://github.com/sudhanshuraj13/A.R.G.U.S" className="w-fit flex items-center gap-1.5 px-2 py-1 bg-surface-alt border border-border rounded text-[10px] font-mono text-muted hover:text-primary transition-colors">
-            <Code size={12} />
-            [ VIEW SOURCE ON GITHUB ]
-          </a>
+          <div className="text-[10px] text-dim font-mono leading-relaxed">
+            The core execution engine powering A.R.G.U.S. It utilizes LangGraph state loops to execute unstructured browsing tasks, featuring a RiskClassifier protocol that intercepts high-risk commands for manual approval.
+          </div>
         </div>
       </div>
 
@@ -106,27 +107,36 @@ export function ArgusModule() {
 
       {/* Result Area */}
       <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
-        {result && (
-          <div className="border border-terminal-green/30 bg-terminal-green/5 rounded p-3">
-            <div className="text-xs font-semibold text-terminal-green uppercase tracking-wider mb-2">
-              ✓ {result.message}
+        {artifact ? (
+          <div className="border border-border bg-surface-alt rounded flex flex-col">
+            <div className="px-3 py-1.5 border-b border-border bg-surface flex justify-between items-center">
+              <span className="text-[10px] font-mono text-dim uppercase tracking-wider">Execution Artifact</span>
+              <span className="text-[10px] font-mono text-terminal-green uppercase">Job Complete</span>
             </div>
-            <div className="text-xs font-mono text-primary flex gap-2 items-center">
-              <span className="text-dim">Trace ID:</span>
-              <span className="bg-surface px-1.5 py-0.5 rounded border border-border/50 text-terminal-green font-bold">
-                {result.trace_id}
-              </span>
+            <div className="p-3">
+              {artifact.status === "APPROVAL_REQUIRED" ? (
+                <div className="border border-amber bg-amber/10 text-amber p-3 rounded font-mono text-xs flex flex-col gap-2">
+                  <div className="font-bold flex items-center gap-2">
+                    <AlertTriangle size={14} /> Execution Paused: Manual Approval Required
+                  </div>
+                  <div className="opacity-80">Reason: {artifact.reason}</div>
+                  <div className="opacity-80">Risk Level: {artifact.risk_level}</div>
+                </div>
+              ) : (
+                <pre className="text-[10px] font-mono text-primary whitespace-pre-wrap bg-base p-2 rounded border border-border/50 overflow-x-auto">
+                  {JSON.stringify(artifact, null, 2)}
+                </pre>
+              )}
             </div>
-            <p className="text-[10px] text-dim font-mono mt-3">
-              This task is now executing asynchronously in the BullMQ worker pool.
-              Watch the Live Traces panel below to monitor execution steps in real-time.
-            </p>
           </div>
-        )}
-
-        {!isExecuting && !result && (
+        ) : result ? (
+          <div className="flex flex-col items-center justify-center py-10 gap-3 border border-border/30 rounded bg-base/30">
+            <Loader2 size={24} className="animate-spin text-terminal-green" />
+            <span className="text-xs font-mono text-dim animate-pulse">Executing background job...</span>
+          </div>
+        ) : (
           <div className="text-xs text-dim font-mono text-center py-8">
-            Enter a voice command and dispatch the job to the worker queue.
+            Awaiting Execution...
           </div>
         )}
       </div>

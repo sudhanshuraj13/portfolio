@@ -78,6 +78,7 @@ export async function ragWorkerLogic(trace_id: string, payload: { query: string 
       status: "SUCCESS",
       query,
       results_found: regexResults.length + semanticResults.length,
+      results: [...regexResults, ...semanticResults].slice(0, 5),
       execution_time_ms: elapsed
     };
 

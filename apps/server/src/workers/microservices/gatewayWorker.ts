@@ -22,7 +22,8 @@ export async function gatewayWorkerLogic(trace_id: string, payload: { prompt: st
       status: "SUCCESS",
       provider_used: "Gemini-1.5-Pro",
       failover_triggered: true,
-      execution_time_ms: elapsed
+      execution_time_ms: elapsed,
+      response_text: "### Microservices Architecture\n\nEvent-driven microservices offer several key benefits:\n1. **Scalability:** Independently scale components based on load.\n2. **Resilience:** If one service fails, it doesn't bring down the whole system.\n3. **Agility:** Teams can deploy services independently."
     };
 
   } catch (err: any) {

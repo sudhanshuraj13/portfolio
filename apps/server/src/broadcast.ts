@@ -22,6 +22,20 @@ export function broadcast(entry: LogEntry): void {
   }
 }
 
+/** Broadcast a final execution artifact to all connected clients */
+export function broadcastArtifact(trace_id: string, payload: any): void {
+  const message = JSON.stringify({
+    type: "ARTIFACT",
+    trace_id,
+    payload
+  });
+  for (const ws of clients) {
+    if (ws.readyState === 1) {
+      ws.send(message);
+    }
+  }
+}
+
 /** Convenience: broadcast + await a delay for realistic streaming */
 export async function streamLog(
   level: LogLevel,

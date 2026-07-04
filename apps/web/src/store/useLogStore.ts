@@ -17,6 +17,8 @@ interface LogState {
   logs: LogEntry[];
   activeModule: ModuleId;
   wsConnected: boolean;
+  artifacts: Record<string, any>;
+  addArtifact: (trace_id: string, payload: any) => void;
   addLog: (entry: Omit<LogEntry, "id">) => void;
   clearLogs: () => void;
   setActiveModule: (mod: ModuleId) => void;
@@ -29,6 +31,12 @@ export const useLogStore = create<LogState>((set) => ({
   logs: [],
   activeModule: "argus",
   wsConnected: false,
+  artifacts: {},
+
+  addArtifact: (trace_id, payload) =>
+    set((state) => ({
+      artifacts: { ...state.artifacts, [trace_id]: payload },
+    })),
 
   addLog: (entry) =>
     set((state) => ({
