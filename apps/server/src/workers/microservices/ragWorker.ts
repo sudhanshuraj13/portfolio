@@ -28,7 +28,8 @@ export async function ragWorkerLogic(trace_id: string, payload: { query: string 
       throw new Error(`Failed to read dataset: ${err}`);
     }
     
-    const parsed = JSON.parse(fileContent) as SihProblem[];
+    const rawJson = JSON.parse(fileContent);
+    const parsed = (rawJson.data || rawJson) as SihProblem[];
     await recordSystemLog(trace_id, "INFO", "RAG_SANDBOX", "DATA_LOADED", `Corpus size: ${parsed.length} documents indexed locally`, 50, "SUCCESS");
 
     const queryLower = query.toLowerCase();
@@ -39,7 +40,8 @@ export async function ragWorkerLogic(trace_id: string, payload: { query: string 
     
     let regexResults = [];
     for (const doc of parsed) {
-      const text = `${doc.title} ${doc.description} ${doc.keywords.join(" ")}`.toLowerCase();
+      const description = doc.full_description || doc.description || "";
+      const text = `${doc.title} ${description}`.toLowerCase();
       let matchCount = 0;
       for (const term of queryWords) {
         if (text.includes(term)) matchCount++;
@@ -52,15 +54,15 @@ export async function ragWorkerLogic(trace_id: string, payload: { query: string 
     await recordSystemLog(trace_id, "SUCCESS", "REGEX_ENGINE", "SEARCH_COMPLETE", `Completed: ${regexResults.length} exact matches found`, 100, "SUCCESS");
 
     // Local Semantic Search (No API calls)
-    await recordSystemLog(trace_id, "INFO", "LOCAL_SIMILARITY", "SEARCH_START", "Computing local algorithmic similarity (Jaccard + Tag overlap)...", 0, "SUCCESS");
+    await recordSystemLog(trace_id, "INFO", "LOCAL_SIMILARITY", "SEARCH_START", "Computing local algorithmic similarity...", 0, "SUCCESS");
     
     let semanticResults = [];
     for (const doc of parsed) {
-      const tagOverlap = doc.keywords.filter(t => queryLower.includes(t.toLowerCase())).length;
-      const contentWords = doc.description.toLowerCase().split(/\s+/);
+      const description = doc.full_description || doc.description || "";
+      const contentWords = description.toLowerCase().split(/\s+/);
       const wordOverlap = queryWords.filter(qw => contentWords.some(cw => cw.includes(qw))).length;
       
-      const score = (tagOverlap * 0.4 + wordOverlap * 0.2) / Math.max(queryWords.length, 1);
+      const score = wordOverlap / Math.max(queryWords.length, 1);
       if (score > 0.1) {
         semanticResults.push({ ...doc, score, matchType: "SEMANTIC" });
       }
