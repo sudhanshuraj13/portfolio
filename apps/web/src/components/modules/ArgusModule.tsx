@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Play, Loader2, Code, AlertTriangle } from "lucide-react";
+import { Play, Loader2, Code, AlertTriangle, ChevronDown } from "lucide-react";
 import { useLogStore } from "@/store/useLogStore";
 
 interface QueueResponse {
@@ -15,6 +15,7 @@ export function ArgusModule() {
     "Check the price of a blue shirt on Amazon and buy it"
   );
   const [isExecuting, setIsExecuting] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
   const [result, setResult] = useState<QueueResponse | null>(null);
   const artifacts = useLogStore((s) => s.artifacts);
   const addArtifact = useLogStore((s) => s.addArtifact);
@@ -67,20 +68,31 @@ export function ArgusModule() {
     <div className="flex flex-col h-full">
       {/* Module Header */}
       <div className="border-b border-border px-4 py-3 bg-base/50">
-        <div className="flex items-center gap-2 mb-1">
-          <span className="text-[10px] font-mono text-terminal-green bg-terminal-green/10 px-1.5 py-0.5 rounded">
-            MICROSERVICE 01
-          </span>
-          <h2 className="text-sm font-semibold text-primary">
-            A.R.G.U.S. Agentic Web Automation Engine
-          </h2>
+        <div 
+          className="flex items-center justify-between cursor-pointer group"
+          onClick={() => setIsExpanded(!isExpanded)}
+        >
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-[10px] font-mono text-terminal-green bg-terminal-green/10 px-1.5 py-0.5 rounded">
+              MICROSERVICE 01
+            </span>
+            <h2 className="text-sm font-semibold text-primary group-hover:text-terminal-green transition-colors">
+              A.R.G.U.S. Agentic Web Automation Engine
+            </h2>
+          </div>
+          <ChevronDown size={14} className={`text-dim transition-transform duration-300 ${isExpanded ? "rotate-180" : ""}`} />
         </div>
-        <p className="text-xs text-dim font-mono mb-3 leading-relaxed">
-          Autonomous stateful browser assistant powered by LangGraph. Simulates
-          intent extraction, web search, and action token generation.
-          <br /><br />
-          <span className="text-primary font-semibold">System Context:</span> The core execution engine powering A.R.G.U.S. It utilizes LangGraph state loops to execute unstructured browsing tasks, featuring a RiskClassifier protocol that intercepts high-risk commands for manual approval.
-        </p>
+        
+        <div className={`grid transition-all duration-300 ease-in-out ${isExpanded ? "grid-rows-[1fr] opacity-100 mt-2" : "grid-rows-[0fr] opacity-0"}`}>
+          <div className="overflow-hidden">
+            <p className="text-xs text-dim font-mono mb-3 leading-relaxed">
+              Autonomous stateful browser assistant powered by LangGraph. Simulates
+              intent extraction, web search, and action token generation.
+              <br /><br />
+              <span className="text-primary font-semibold">System Context:</span> The core execution engine powering A.R.G.U.S. It utilizes LangGraph state loops to execute unstructured browsing tasks, featuring a RiskClassifier protocol that intercepts high-risk commands for manual approval.
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Input Area */}

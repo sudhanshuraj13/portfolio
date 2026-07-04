@@ -1,30 +1,31 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Play, ToggleLeft, ToggleRight, Loader2, Code, ShieldCheck, ShieldAlert } from "lucide-react";
+import { Play, ToggleLeft, ToggleRight, Loader2, Code, ShieldCheck, ShieldAlert, ChevronDown } from "lucide-react";
 import { useLogStore } from "@/store/useLogStore";
 
 const DEFAULT_VALID_DAG = JSON.stringify(
   {
-    Start: ["TaskA", "TaskB"],
-    TaskA: ["TaskC"],
-    TaskB: ["TaskC"],
-    TaskC: ["TaskD"],
-    TaskD: ["End"],
-    End: [],
+    nodes: ["A", "B", "C", "D"],
+    edges: [
+      { from: "A", to: "B" },
+      { from: "B", to: "C" },
+      { from: "C", to: "D" },
+    ],
   },
   null,
   2
 );
 
-const DEFAULT_CYCLIC_DAG = JSON.stringify(
+const DEFAULT_BROKEN_DAG = JSON.stringify(
   {
-    Start: ["TaskA", "TaskB"],
-    TaskA: ["TaskC"],
-    TaskB: ["TaskC"],
-    TaskC: ["TaskD"],
-    TaskD: ["TaskB"],
-    End: [],
+    nodes: ["A", "B", "C", "D"],
+    edges: [
+      { from: "A", to: "B" },
+      { from: "B", to: "C" },
+      { from: "C", to: "D" },
+      { from: "D", to: "B" }, // CYCLE!
+    ],
   },
   null,
   2
@@ -37,9 +38,10 @@ interface QueueResponse {
 }
 
 export function GraphValidatorModule() {
-  const [graphJson, setGraphJson] = useState(DEFAULT_VALID_DAG);
-  const [useBroken, setUseBroken] = useState(false);
+  const [jsonInput, setJsonInput] = useState(DEFAULT_VALID_DAG);
+  const [isBroken, setIsBroken] = useState(false);
   const [isValidating, setIsValidating] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
   const [result, setResult] = useState<QueueResponse | null>(null);
   const [jsonError, setJsonError] = useState<string | null>(null);
   const artifacts = useLogStore((s) => s.artifacts);
@@ -47,36 +49,28 @@ export function GraphValidatorModule() {
 
   // Toggle between valid and broken graph
   useEffect(() => {
-    setGraphJson(useBroken ? DEFAULT_CYCLIC_DAG : DEFAULT_VALID_DAG);
-    setResult(null);
+    setJsonInput(isBroken ? DEFAULT_BROKEN_DAG : DEFAULT_VALID_DAG);
     setJsonError(null);
-  }, [useBroken]);
+  }, [isBroken]);
 
   const handleValidate = async () => {
     if (isValidating) return;
 
-    // Validate JSON
-    let adjacencyList: Record<string, string[]>;
     try {
-      adjacencyList = JSON.parse(graphJson);
+      const parsed = JSON.parse(jsonInput);
       setJsonError(null);
-    } catch {
-      setJsonError("Invalid JSON. Please fix the adjacency list.");
-      return;
-    }
+      setIsValidating(true);
+      setResult(null);
 
-    setIsValidating(true);
-    setResult(null);
-
-    try {
       const res = await fetch("/api/graph/validate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ adjacencyList, useBroken }),
+        body: JSON.stringify({ graph: parsed }),
       });
       const data = await res.json();
       setResult(data);
-    } catch {
+    } catch (err: any) {
+      setJsonError("Invalid JSON syntax");
       setResult(null);
     } finally {
       setIsValidating(false);
@@ -87,38 +81,49 @@ export function GraphValidatorModule() {
     <div className="flex flex-col h-full">
       {/* Module Header */}
       <div className="border-b border-border px-4 py-3 bg-base/50">
-        <div className="flex items-center gap-2 mb-1">
-          <span className="text-[10px] font-mono text-error bg-error/10 px-1.5 py-0.5 rounded">
-            MICROSERVICE 04
-          </span>
-          <h2 className="text-sm font-semibold text-primary">
-            HR Workflow Designer
-          </h2>
+        <div 
+          className="flex items-center justify-between cursor-pointer group"
+          onClick={() => setIsExpanded(!isExpanded)}
+        >
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-[10px] font-mono text-error bg-error/10 px-1.5 py-0.5 rounded">
+              MICROSERVICE 04
+            </span>
+            <h2 className="text-sm font-semibold text-primary group-hover:text-error transition-colors">
+              HR Workflow Designer
+            </h2>
+          </div>
+          <ChevronDown size={14} className={`text-dim transition-transform duration-300 ${isExpanded ? "rotate-180" : ""}`} />
         </div>
-        <p className="text-xs text-dim font-mono mb-3 leading-relaxed">
-          A React Flow canvas builder that lets HR admins place steps, connect them, configure each step, and run the workflow through a mock simulation. Features client-side validation for missing links, invalid Start/End placement, and cycles.
-          <br /><br />
-          <span className="text-primary font-semibold">System Context:</span> A deterministic backend engine that ingests complex adjacency lists and executes Depth-First Search (DFS) algorithms to detect infinite data cycles and invalid state placements.
-        </p>
+        
+        <div className={`grid transition-all duration-300 ease-in-out ${isExpanded ? "grid-rows-[1fr] opacity-100 mt-2" : "grid-rows-[0fr] opacity-0"}`}>
+          <div className="overflow-hidden">
+            <p className="text-xs text-dim font-mono mb-3 leading-relaxed">
+              A React Flow canvas builder that lets HR admins place steps, connect them, configure each step, and run the workflow through a mock simulation. Features client-side validation for missing links, invalid Start/End placement, and cycles.
+              <br /><br />
+              <span className="text-primary font-semibold">System Context:</span> A deterministic backend engine that ingests complex adjacency lists and executes Depth-First Search (DFS) algorithms to detect infinite data cycles and invalid state placements.
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Controls */}
       <div className="p-4 border-b border-border flex items-center justify-between">
         <div className="flex items-center gap-3">
           <button
-            onClick={() => setUseBroken(!useBroken)}
+            onClick={() => setIsBroken(!isBroken)}
             className={`flex items-center gap-2 px-3 py-1.5 rounded border text-xs font-mono transition-colors ${
-              useBroken
+              isBroken
                 ? "border-error/30 text-error bg-error/5 hover:bg-error/10"
                 : "border-terminal-green/30 text-terminal-green bg-terminal-green/5 hover:bg-terminal-green/10"
             }`}
           >
-            {useBroken ? (
+            {isBroken ? (
               <ToggleRight size={14} />
             ) : (
               <ToggleLeft size={14} />
             )}
-            {useBroken ? "Broken Graph (Cyclic)" : "Valid DAG"}
+            {isBroken ? "Broken Graph (Cyclic)" : "Valid DAG"}
           </button>
         </div>
 
@@ -146,9 +151,9 @@ export function GraphValidatorModule() {
             </span>
           </div>
           <textarea
-            value={graphJson}
+            value={jsonInput}
             onChange={(e) => {
-              setGraphJson(e.target.value);
+              setJsonInput(e.target.value);
               setJsonError(null);
             }}
             spellCheck={false}

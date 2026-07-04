@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Send, Loader2, Code, Bot } from "lucide-react";
+import { Send, Loader2, Code, Bot, ChevronDown } from "lucide-react";
 import { useLogStore } from "@/store/useLogStore";
 import ReactMarkdown from "react-markdown";
 
@@ -14,6 +14,7 @@ interface QueueResponse {
 export function LlmGatewayModule() {
   const [prompt, setPrompt] = useState("Summarize the benefits of event-driven microservices architecture.");
   const [isRouting, setIsRouting] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
   const [result, setResult] = useState<QueueResponse | null>(null);
   const artifacts = useLogStore((s) => s.artifacts);
   const artifact = result?.trace_id ? artifacts[result.trace_id] : null;
@@ -43,19 +44,30 @@ export function LlmGatewayModule() {
     <div className="flex flex-col h-full">
       {/* Module Header */}
       <div className="border-b border-border px-4 py-3 bg-base/50">
-        <div className="flex items-center gap-2 mb-1">
-          <span className="text-[10px] font-mono text-amber bg-amber/10 px-1.5 py-0.5 rounded">
-            MICROSERVICE 02
-          </span>
-          <h2 className="text-sm font-semibold text-primary">
-            YouTube AI Focus Agent
-          </h2>
+        <div 
+          className="flex items-center justify-between cursor-pointer group"
+          onClick={() => setIsExpanded(!isExpanded)}
+        >
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-[10px] font-mono text-amber bg-amber/10 px-1.5 py-0.5 rounded">
+              MICROSERVICE 02
+            </span>
+            <h2 className="text-sm font-semibold text-primary group-hover:text-amber transition-colors">
+              YouTube AI Focus Agent
+            </h2>
+          </div>
+          <ChevronDown size={14} className={`text-dim transition-transform duration-300 ${isExpanded ? "rotate-180" : ""}`} />
         </div>
-        <p className="text-xs text-dim font-mono mb-3 leading-relaxed">
-          Distraction reduction for YouTube using AI classification guided by custom keyword intent lists. Every visible video title is sent to an AI provider and classified as EDUCATIONAL or DISTRACTING. No instant local keyword filtering – keywords only steer AI behavior.
-          <br /><br />
-          <span className="text-primary font-semibold">System Context:</span> A headless reverse proxy routing architecture. It dynamically routes inference requests across multiple providers based on latency and rate-limit tracking, ensuring uninterrupted AI classification.
-        </p>
+        
+        <div className={`grid transition-all duration-300 ease-in-out ${isExpanded ? "grid-rows-[1fr] opacity-100 mt-2" : "grid-rows-[0fr] opacity-0"}`}>
+          <div className="overflow-hidden">
+            <p className="text-xs text-dim font-mono mb-3 leading-relaxed">
+              Distraction reduction for YouTube using AI classification guided by custom keyword intent lists. Every visible video title is sent to an AI provider and classified as EDUCATIONAL or DISTRACTING. No instant local keyword filtering – keywords only steer AI behavior.
+              <br /><br />
+              <span className="text-primary font-semibold">System Context:</span> A headless reverse proxy routing architecture. It dynamically routes inference requests across multiple providers based on latency and rate-limit tracking, ensuring uninterrupted AI classification.
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Input Area */}

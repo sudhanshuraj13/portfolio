@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Search, Loader2, Code, Database } from "lucide-react";
+import { Search, Loader2, Code, Database, ChevronDown } from "lucide-react";
 import { useLogStore } from "@/store/useLogStore";
 
 interface QueueResponse {
@@ -13,6 +13,7 @@ interface QueueResponse {
 export function RagSandboxModule() {
   const [query, setQuery] = useState("Smart early warning system for water-borne diseases");
   const [isSearching, setIsSearching] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
   const [result, setResult] = useState<QueueResponse | null>(null);
   const artifacts = useLogStore((s) => s.artifacts);
   const artifact = result?.trace_id ? artifacts[result.trace_id] : null;
@@ -42,19 +43,30 @@ export function RagSandboxModule() {
     <div className="flex flex-col h-full">
       {/* Module Header */}
       <div className="border-b border-border px-4 py-3 bg-base/50">
-        <div className="flex items-center gap-2 mb-1">
-          <span className="text-[10px] font-mono text-info bg-info/10 px-1.5 py-0.5 rounded">
-            MICROSERVICE 03
-          </span>
-          <h2 className="text-sm font-semibold text-primary">
-            SIH Assistant — Smart India Hackathon RAG Chatbot
-          </h2>
+        <div 
+          className="flex items-center justify-between cursor-pointer group"
+          onClick={() => setIsExpanded(!isExpanded)}
+        >
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-[10px] font-mono text-info bg-info/10 px-1.5 py-0.5 rounded">
+              MICROSERVICE 03
+            </span>
+            <h2 className="text-sm font-semibold text-primary group-hover:text-info transition-colors">
+              SIH Assistant — Smart India Hackathon RAG Chatbot
+            </h2>
+          </div>
+          <ChevronDown size={14} className={`text-dim transition-transform duration-300 ${isExpanded ? "rotate-180" : ""}`} />
         </div>
-        <p className="text-xs text-dim font-mono mb-3 leading-relaxed">
-          A production-ready AI chatbot designed to help users query and understand problem statements, themes, and organizations from the Smart India Hackathon (SIH). Built using a Retrieval-Augmented Generation (RAG) architecture, it leverages semantic search and Large Language Models to provide highly accurate, grounded answers.
-          <br /><br />
-          <span className="text-primary font-semibold">System Context:</span> A hybrid retrieval strategy combining regex-based exact problem-ID matching with semantic vector search to deliver highly precise, context-aware answers without external API costs.
-        </p>
+        
+        <div className={`grid transition-all duration-300 ease-in-out ${isExpanded ? "grid-rows-[1fr] opacity-100 mt-2" : "grid-rows-[0fr] opacity-0"}`}>
+          <div className="overflow-hidden">
+            <p className="text-xs text-dim font-mono mb-3 leading-relaxed">
+              A production-ready AI chatbot designed to help users query and understand problem statements, themes, and organizations from the Smart India Hackathon (SIH). Built using a Retrieval-Augmented Generation (RAG) architecture, it leverages semantic search and Large Language Models to provide highly accurate, grounded answers.
+              <br /><br />
+              <span className="text-primary font-semibold">System Context:</span> A hybrid retrieval strategy combining regex-based exact problem-ID matching with semantic vector search to deliver highly precise, context-aware answers without external API costs.
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Input Area */}
