@@ -82,10 +82,56 @@ export function SystemLogPanel() {
     }
   }, [activeTab]);
 
+  const [height, setHeight] = useState(256); // Default 256px (h-64 equivalent)
+  const isDragging = useRef(false);
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault();
+    isDragging.current = true;
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
+    document.body.style.cursor = "ns-resize";
+    document.body.style.userSelect = "none";
+  };
+
+  const handleMouseMove = (e: MouseEvent) => {
+    if (!isDragging.current) return;
+    const newHeight = window.innerHeight - e.clientY;
+    const boundedHeight = Math.max(40, Math.min(newHeight, window.innerHeight * 0.8));
+    setHeight(boundedHeight);
+  };
+
+  const handleMouseUp = () => {
+    isDragging.current = false;
+    document.removeEventListener("mousemove", handleMouseMove);
+    document.removeEventListener("mouseup", handleMouseUp);
+    document.body.style.cursor = "";
+    document.body.style.userSelect = "";
+  };
+
+  useEffect(() => {
+    // Cleanup listeners just in case
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, []);
+
   return (
-    <div className="h-64 min-h-40 border-t border-border bg-surface-alt flex flex-col select-none">
+    <div 
+      style={{ height: `${height}px` }} 
+      className="bg-surface-alt flex flex-col select-none relative"
+    >
+      {/* Drag Handle */}
+      <div 
+        onMouseDown={handleMouseDown}
+        className="absolute top-0 left-0 right-0 h-1.5 cursor-ns-resize hover:bg-info/30 z-10 -translate-y-1/2 transition-colors flex items-center justify-center group"
+      >
+        <div className="w-10 h-0.5 bg-border group-hover:bg-info/50 rounded-full" />
+      </div>
+
       {/* Header bar */}
-      <div className="flex items-center justify-between px-3 py-1.5 border-b border-border bg-base/50">
+      <div className="flex items-center justify-between px-3 py-1.5 border-t border-b border-border bg-base/50 mt-1">
         <div className="flex items-center gap-4">
           <button
             onClick={() => setActiveTab("TRACES")}
