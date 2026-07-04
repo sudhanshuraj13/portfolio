@@ -22,13 +22,9 @@ const PORT = parseInt(process.env.PORT || "4000", 10);
 async function main() {
   const app = Fastify({ logger: false });
 
-  // CORS — allow Next.js dev server
+  // CORS — allow all origins for the portfolio
   await app.register(cors, {
-    origin: [
-      "http://localhost:3000",
-      "http://127.0.0.1:3000",
-      // Production origins can be added here
-    ],
+    origin: true, // Allows any origin (Vercel, localhost, etc.)
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   });
 
