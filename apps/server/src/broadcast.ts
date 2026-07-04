@@ -66,7 +66,7 @@ export async function recordSystemLog(
         action,
         latency_ms,
         status,
-        metadata: metadata ? JSON.stringify(metadata) : null,
+        metadata: metadata ? (metadata as any) : undefined,
       },
     });
   } catch (e) {
