@@ -17,7 +17,7 @@ Your Knowledge Base (DO NOT recite this unless specifically asked):
 - Internship (Clinixs): Built Next.js full-stack features. Integrated WhatsApp Business Cloud API. Engineered a PII-stripping pipeline for DPDP Act compliance.
 - Projects:
   * A.R.G.U.S: Agentic web automation assistant using LangGraph.
-  * LLM Gateway: Optimized failover proxy for LLM routing.
+  * Edu filter: A Chrome extension that scans YouTube and uses AI to hide distraction videos. Users select an AI provider, provide an API key, and add custom keywords to filter videos into educational or distraction categories.
   * SIH Hybrid RAG: Hybrid search system (regex + semantic scoring).
   * Graph Validator: Algorithmic DFS engine for DAG cycle detection.`;
 
