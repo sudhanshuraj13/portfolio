@@ -100,7 +100,7 @@ export function ArgusModule() {
         <label className="text-[10px] text-dim uppercase tracking-widest font-mono">
           Voice Command Simulation
         </label>
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2">
           <input
             value={command}
             onChange={(e) => setCommand(e.target.value)}

@@ -9,7 +9,7 @@ export function Header() {
   return (
     <header className="h-14 min-h-14 border-b border-border bg-surface-alt flex items-center px-4 gap-4 select-none">
       {/* Title */}
-      <div className="flex items-center gap-3 shrink-0">
+      <div className="flex items-center gap-2 sm:gap-3 shrink-0">
         <div className="flex items-center gap-2">
           <div
             className={`w-2 h-2 rounded-full ${
@@ -22,8 +22,8 @@ export function Header() {
             SUDHANSHU RAJ
           </h1>
         </div>
-        <span className="text-dim text-xs font-mono">|</span>
-        <span className="text-muted text-xs uppercase tracking-wider">
+        <span className="hidden sm:inline text-dim text-xs font-mono">|</span>
+        <span className="hidden sm:inline text-muted text-xs uppercase tracking-wider">
           AI & Backend Engineer
         </span>
       </div>

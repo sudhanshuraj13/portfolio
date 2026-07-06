@@ -89,3 +89,12 @@ body {
 .log-entry {
   animation: fadeSlideIn 0.15s ease-out;
 }
+
+/* Hide scrollbar for specific elements */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

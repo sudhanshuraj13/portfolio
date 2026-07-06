@@ -51,7 +51,7 @@ export function ChatBubble() {
     <>
       {/* Chat Panel */}
       {isOpen && (
-        <div className="fixed bottom-20 right-4 w-96 max-w-[calc(100vw-2rem)] h-[28rem] bg-surface border border-border rounded-lg shadow-2xl shadow-black/50 flex flex-col z-50 overflow-hidden">
+        <div className="fixed bottom-20 right-4 sm:right-6 w-[24rem] max-w-[calc(100vw-2rem)] h-[28rem] max-h-[calc(100vh-6rem)] bg-surface border border-border rounded-lg shadow-2xl shadow-black/50 flex flex-col z-50 overflow-hidden">
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-surface-alt">
             <div className="flex items-center gap-2">

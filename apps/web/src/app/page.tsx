@@ -31,7 +31,7 @@ export default function Home() {
       <Header />
 
       {/* Middle: Sidebar + Workspace */}
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-col md:flex-row flex-1 overflow-hidden">
         {/* Left: Project Tabs */}
         <ProjectTabs />
 

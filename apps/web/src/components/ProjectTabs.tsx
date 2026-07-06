@@ -35,14 +35,14 @@ export function ProjectTabs() {
   const setActiveModule = useLogStore((s) => s.setActiveModule);
 
   return (
-    <aside className="w-52 min-w-52 border-r border-border bg-surface-alt flex flex-col select-none">
-      <div className="px-3 py-2 border-b border-border">
+    <aside className="w-full md:w-52 md:min-w-52 border-b md:border-b-0 md:border-r border-border bg-surface-alt flex flex-col select-none shrink-0">
+      <div className="hidden md:block px-3 py-2 border-b border-border">
         <span className="text-[10px] text-dim uppercase tracking-widest font-mono">
           SYSTEM MICROSERVICES
         </span>
       </div>
 
-      <nav className="flex-1 py-1">
+      <nav className="flex-1 py-1 md:py-1 flex overflow-x-auto md:flex-col hide-scrollbar">
         {MODULES.map((mod) => {
           const isActive = activeModule === mod.id;
           const Icon = mod.icon;
@@ -51,10 +51,10 @@ export function ProjectTabs() {
             <button
               key={mod.id}
               onClick={() => setActiveModule(mod.id)}
-              className={`w-full flex items-center gap-3 px-3 py-2.5 text-left transition-all duration-150 group ${
+              className={`shrink-0 md:w-full flex items-center gap-2 md:gap-3 px-3 py-2 md:py-2.5 text-left transition-all duration-150 group ${
                 isActive
-                  ? "bg-terminal-green/8 border-l-2 border-terminal-green text-primary"
-                  : "border-l-2 border-transparent text-muted hover:text-primary hover:bg-surface"
+                  ? "bg-terminal-green/8 border-b-2 md:border-b-0 md:border-l-2 border-terminal-green text-primary"
+                  : "border-b-2 md:border-b-0 md:border-l-2 border-transparent text-muted hover:text-primary hover:bg-surface"
               }`}
             >
               <Icon
@@ -69,12 +69,12 @@ export function ProjectTabs() {
                 <span className="text-[10px] font-mono text-dim uppercase tracking-wider">
                   {mod.shortLabel}
                 </span>
-                <span className="text-xs truncate">{mod.label}</span>
+                <span className="text-xs truncate hidden md:block">{mod.label}</span>
               </div>
 
               {/* Active indicator */}
               {isActive && (
-                <div className="ml-auto w-1.5 h-1.5 rounded-full bg-terminal-green shadow-[0_0_6px_rgba(34,197,94,0.5)]" />
+                <div className="hidden md:block ml-auto w-1.5 h-1.5 rounded-full bg-terminal-green shadow-[0_0_6px_rgba(34,197,94,0.5)]" />
               )}
             </button>
           );
@@ -82,7 +82,7 @@ export function ProjectTabs() {
       </nav>
 
       {/* Footer metadata */}
-      <div className="border-t border-border px-3 py-2 space-y-1">
+      <div className="hidden md:block border-t border-border px-3 py-2 space-y-1">
         <div className="flex justify-between text-[10px] font-mono">
           <span className="text-dim">Runtime</span>
           <span className="text-muted">Node 22.x</span>

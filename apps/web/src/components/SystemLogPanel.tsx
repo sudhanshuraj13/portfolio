@@ -85,6 +85,13 @@ export function SystemLogPanel() {
   const [height, setHeight] = useState(256); // Default 256px (h-64 equivalent)
   const isDragging = useRef(false);
 
+  // Set initial height based on window width
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.innerWidth < 768) {
+      setHeight(160); // Smaller height on mobile
+    }
+  }, []);
+
   const handleMouseDown = (e: React.MouseEvent) => {
     e.preventDefault();
     isDragging.current = true;
@@ -190,7 +197,7 @@ export function SystemLogPanel() {
                 key={log.id}
                 className={`log-entry flex flex-col gap-1 py-1.5 px-2 rounded border-b border-border/30 last:border-0 ${LEVEL_BG[log.level]}`}
               >
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap md:flex-nowrap items-center gap-2">
                   <span className="text-dim shrink-0 w-20">
                     {formatTime(log.timestamp)}
                   </span>
@@ -199,7 +206,7 @@ export function SystemLogPanel() {
                   >
                     {log.level}
                   </span>
-                  <span className="text-dim shrink-0 font-bold">
+                  <span className="text-dim shrink-0 font-bold hidden sm:inline-block">
                     [{log.source}]
                   </span>
                   {log.trace_id && (
@@ -208,7 +215,8 @@ export function SystemLogPanel() {
                     </span>
                   )}
                 </div>
-                <span className="text-primary/90 whitespace-pre-wrap break-all ml-24">
+                <span className="text-primary/90 whitespace-pre-wrap break-all sm:ml-24 mt-1 sm:mt-0 text-[11px] sm:text-xs">
+                  <span className="text-dim font-bold sm:hidden mr-1">[{log.source}]</span>
                   {log.message}
                 </span>
               </div>
@@ -218,7 +226,7 @@ export function SystemLogPanel() {
       ) : (
         <div className="flex-1 overflow-y-auto p-4 bg-base">
           {telemetry ? (
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               <div className="border border-border rounded p-4 bg-surface flex flex-col gap-1">
                 <span className="text-[10px] uppercase font-mono text-dim tracking-wider">Queue Depth</span>
                 <span className="text-2xl font-mono text-amber">{telemetry.queue_depth} <span className="text-xs text-dim">jobs</span></span>
