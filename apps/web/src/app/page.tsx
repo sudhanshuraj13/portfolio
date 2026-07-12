@@ -54,7 +54,7 @@ const EXPERIENCE = {
   company: "Clinixs",
   role: "Backend & AI Engineering Intern",
   type: "Healthcare SaaS Startup",
-  period: "Jan 2025 – Present",
+  period: "Jun 2025 – Present",
   location: "Remote",
   stack: [
     "Node.js",
@@ -336,11 +336,10 @@ export default function HomePage() {
                     {project.name}
                   </h3>
                   <span
-                    className={`text-[9px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded border ${
-                      project.status === "Live"
+                    className={`text-[9px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded border ${project.status === "Live"
                         ? "text-terminal-green border-terminal-green/30 bg-terminal-green/5"
                         : "text-amber border-amber/30 bg-amber/5"
-                    }`}
+                      }`}
                   >
                     {project.status}
                   </span>
