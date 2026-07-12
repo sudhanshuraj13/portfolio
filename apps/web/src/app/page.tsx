@@ -60,11 +60,11 @@ const EXPERIENCE = {
     "Node.js",
     "Next.js Route Handlers",
     "Express.js",
-    "Firebase",
     "Supabase",
     "GitHub Actions CI/CD",
     "Vercel",
     "WhatsApp Business Cloud API",
+    "LLM",
   ],
   bullets: [
     "Own end-to-end development of backend features and AI systems within an existing production codebase, including a patient-facing AI agent that routes WhatsApp Business Cloud API queries through an LLM for automated response generation.",
@@ -151,7 +151,7 @@ export default function HomePage() {
                 </p>
 
                 <p className="text-sm text-dim leading-relaxed max-w-2xl mb-6">
-                  AI and Backend Engineer specializing in RAG pipelines, LangGraph multi-agent orchestration, and production backend systems in TypeScript, Node.js, and Python. Currently Backend & AI Engineering Intern at Clinixs (healthcare SaaS), building an LLM-driven patient engagement agent on the WhatsApp Business Cloud API with production CI/CD ownership.
+                  AI and Backend Engineer specializing in RAG pipelines, LangGraph multi-agent orchestration, and production backend systems in TypeScript, Node.js, and Python. Currently Backend & AI Engineering Intern at Clinixs (healthcare SaaS), where I build and maintain the backend for multiple product features — including an LLM-driven patient engagement agent across WhatsApp Business Cloud API and an in-website chatbot.
                 </p>
 
                 {/* CTA Buttons */}
@@ -337,8 +337,8 @@ export default function HomePage() {
                   </h3>
                   <span
                     className={`text-[9px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded border ${project.status === "Live"
-                        ? "text-terminal-green border-terminal-green/30 bg-terminal-green/5"
-                        : "text-amber border-amber/30 bg-amber/5"
+                      ? "text-terminal-green border-terminal-green/30 bg-terminal-green/5"
+                      : "text-amber border-amber/30 bg-amber/5"
                       }`}
                   >
                     {project.status}
