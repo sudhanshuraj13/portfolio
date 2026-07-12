@@ -28,7 +28,12 @@ export const metadata: Metadata = {
     "Python",
     "Portfolio",
   ],
+  icons: {
+    icon: "/web_icon.png",
+    apple: "/web_icon.png",
+  },
 };
+
 
 export default function RootLayout({
   children,
