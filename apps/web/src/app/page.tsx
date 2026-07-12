@@ -13,6 +13,7 @@ import {
   ExternalLink,
   Briefcase,
   Terminal,
+  Eye,
 } from "lucide-react";
 
 /* ───────── Data ───────── */
@@ -161,8 +162,8 @@ export default function HomePage() {
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 px-4 py-2.5 bg-terminal-green/10 border border-terminal-green/30 rounded-lg text-terminal-green text-sm font-mono hover:bg-terminal-green/20 transition-colors"
                   >
-                    <Download size={14} />
-                    Download Resume
+                    <Eye size={14} />
+                    View Resume
                   </a>
                   <a
                     href="mailto:sujalkashyap4803@gmail.com"
