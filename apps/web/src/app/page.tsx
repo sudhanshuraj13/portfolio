@@ -67,8 +67,8 @@ const EXPERIENCE = {
     "WhatsApp Business Cloud API",
   ],
   bullets: [
-    "Built an LLM-driven AI agent for patient-facing clinic workflows, routing natural language queries from the WhatsApp Business Cloud API through an LLM for automated response generation.",
-    "Designed a Firebase/Supabase data layer for patient and clinic records with a PII-stripping stage upstream of every LLM API call, meeting India's Digital Personal Data Protection (DPDP) Act compliance requirements.",
+    "Own end-to-end development of backend features and AI systems within an existing production codebase, including a patient-facing AI agent that routes WhatsApp Business Cloud API queries through an LLM for automated response generation.",
+    "Designed a Supabase data layer for patient and clinic records with a PII-stripping stage upstream of every LLM API call, meeting India's Digital Personal Data Protection (DPDP) Act compliance requirements.",
     "Set up GitHub Actions CI/CD — automated lint and type-check gating on every pull request, with Vercel auto-deploy on merge — for Next.js backend services built for reliability under production data-compliance constraints.",
   ],
 };
