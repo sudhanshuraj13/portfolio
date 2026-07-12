@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { SiteNav } from "@/components/SiteNav";
 import { ChatBubble } from "@/components/ChatBubble";
 import {
@@ -121,10 +122,12 @@ export default function HomePage() {
               {/* Profile Photo */}
               <div className="shrink-0 fade-up">
                 <div className="w-28 h-28 sm:w-36 sm:h-36 rounded-xl border-2 border-border bg-surface flex items-center justify-center overflow-hidden relative">
-                  {/* [NEED: profile photo] — replace this placeholder with an <Image> tag pointing to your photo */}
-                  <div className="w-full h-full bg-gradient-to-br from-terminal-green/20 to-info/20 flex items-center justify-center">
-                    <span className="text-4xl sm:text-5xl font-bold gradient-text">SR</span>
-                  </div>
+                  <Image
+                    src="/profile.png"
+                    alt="Sudhanshu Raj"
+                    fill
+                    className="object-cover"
+                  />
                   <div className="absolute bottom-1.5 right-1.5 w-3 h-3 rounded-full bg-terminal-green shadow-[0_0_8px_rgba(34,197,94,0.6)] status-live" />
                 </div>
               </div>
@@ -153,11 +156,12 @@ export default function HomePage() {
                 {/* CTA Buttons */}
                 <div className="flex flex-wrap items-center gap-3">
                   <a
-                    href="#"
+                    href="https://docs.google.com/document/d/1CMFoH-A2WjlvStIYqW8Ro17IElL3uqxFGLOtnq5BEtQ/edit?usp=sharing"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="flex items-center gap-2 px-4 py-2.5 bg-terminal-green/10 border border-terminal-green/30 rounded-lg text-terminal-green text-sm font-mono hover:bg-terminal-green/20 transition-colors"
                   >
                     <Download size={14} />
-                    {/* [NEED: resume PDF link] */}
                     Download Resume
                   </a>
                   <a

@@ -56,15 +56,17 @@ export default function EduFilterPage() {
               Demo Recording
             </span>
           </div>
-          <div className="aspect-video bg-base flex items-center justify-center">
-            {/* [NEED: Edu-filter demo video file] — replace this placeholder */}
-            <div className="text-center space-y-3">
+          <div className="aspect-video bg-base flex items-center justify-center relative overflow-hidden group">
+            {/* TODO: Add your video or GIF file path below (e.g., src="/edu-filter-demo.mp4") and uncomment the tag */}
+            {/* <video src="YOUR_VIDEO_PATH_HERE.mp4" autoPlay loop muted playsInline className="w-full h-full object-cover absolute inset-0 z-0" /> */}
+            
+            <div className="text-center space-y-3 relative z-10 pointer-events-none">
               <Monitor size={48} className="text-dim mx-auto" />
               <p className="text-sm font-mono text-dim">
                 Demo video will be placed here
               </p>
               <p className="text-[10px] font-mono text-dim/60">
-                [NEED: Edu-filter demo video or GIF]
+                Uncomment the &lt;video&gt; tag in code and add your file path
               </p>
             </div>
           </div>
