@@ -68,6 +68,7 @@ export default function ProjectsPage() {
             ]}
             githubUrl="https://github.com/sudhanshuraj13/A.R.G.U.S"
             demoPath="/projects/argus"
+            consolePath="/projects/argus/console"
             installNote="Load unpacked in Chrome"
           />
 
@@ -87,6 +88,7 @@ export default function ProjectsPage() {
             ]}
             githubUrl="https://github.com/sudhanshuraj13/Edu-filter"
             demoPath="/projects/edu-filter"
+            consolePath="/projects/edu-filter/console"
             installNote="Load unpacked in Chrome"
           />
 
