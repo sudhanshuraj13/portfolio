@@ -1,18 +1,18 @@
 @import "tailwindcss";
 
 @theme {
-  --color-base: #09090b;
-  --color-surface: #18181b;
-  --color-surface-alt: #111113;
-  --color-border: #27272a;
-  --color-border-light: #3f3f46;
-  --color-primary: #fafafa;
-  --color-muted: #a1a1aa;
-  --color-dim: #71717a;
-  --color-terminal-green: #22c55e;
-  --color-terminal-green-dim: #16a34a;
-  --color-amber: #f59e0b;
-  --color-amber-dim: #d97706;
+  --color-base: var(--color-base-value);
+  --color-surface: var(--color-surface-value);
+  --color-surface-alt: var(--color-surface-alt-value);
+  --color-border: var(--color-border-value);
+  --color-border-light: var(--color-border-light-value);
+  --color-primary: var(--color-primary-value);
+  --color-muted: var(--color-muted-value);
+  --color-dim: var(--color-dim-value);
+  --color-terminal-green: var(--color-terminal-green-value);
+  --color-terminal-green-dim: var(--color-terminal-green-dim-value);
+  --color-amber: var(--color-amber-value);
+  --color-amber-dim: var(--color-amber-dim-value);
   --color-error: #ef4444;
   --color-info: #3b82f6;
 
@@ -21,12 +21,48 @@
 }
 
 :root {
+  /* Light mode (default base) */
+  --color-base-value: #f7f7f5;
+  --color-surface-value: #ffffff;
+  --color-surface-alt-value: #f1f1f0;
+  --color-border-value: #e5e5e2;
+  --color-border-light-value: #e0e0dc;
+  --color-primary-value: #141414;
+  --color-muted-value: #5c5c58;
+  --color-dim-value: #8b8b88;
+  --color-terminal-green-value: #0d8a4f;
+  --color-terminal-green-dim-value: #0a6b3d;
+  --color-amber-value: #d97706;
+  --color-amber-dim-value: #b45309;
+
+  --grid-line: #e8e8e5;
+  
+  color-scheme: light;
+}
+
+.dark {
+  /* Dark mode */
+  --color-base-value: #0a0a0a;
+  --color-surface-value: #111111;
+  --color-surface-alt-value: #1a1a1a;
+  --color-border-value: #222222;
+  --color-border-light-value: #3f3f46;
+  --color-primary-value: #ffffff;
+  --color-muted-value: #a0a0a0;
+  --color-dim-value: #71717a;
+  --color-terminal-green-value: #00ff88;
+  --color-terminal-green-dim-value: #00cc66;
+  --color-amber-value: #f59e0b;
+  --color-amber-dim-value: #d97706;
+
+  --grid-line: rgba(255, 255, 255, 0.05);
+  
   color-scheme: dark;
 }
 
 body {
-  background-color: var(--color-base);
-  color: var(--color-primary);
+  background-color: var(--color-base-value);
+  color: var(--color-primary-value);
 }
 
 /* Custom scrollbar */
@@ -143,8 +179,8 @@ body {
 /* Subtle grid background pattern */
 .bg-grid {
   background-image:
-    linear-gradient(rgba(39, 39, 42, 0.3) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(39, 39, 42, 0.3) 1px, transparent 1px);
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
   background-size: 40px 40px;
 }
 

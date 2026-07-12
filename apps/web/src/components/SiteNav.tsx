@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Terminal, FolderGit2, Home, Mail } from "lucide-react";
+import { ThemeToggle } from "./ThemeToggle";
 
 const NAV_ITEMS = [
   { href: "/", label: "Home", icon: Home },
@@ -62,6 +63,10 @@ export function SiteNav() {
             <Mail size={13} />
             <span className="hidden sm:inline">Contact</span>
           </a>
+
+          <div className="w-px h-4 bg-border mx-1" />
+
+          <ThemeToggle />
 
           <a
             href="https://github.com/sudhanshuraj13"
