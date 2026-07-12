@@ -6,26 +6,26 @@ import { useLogStore, type ModuleId } from "@/store/useLogStore";
 const MODULES: { id: ModuleId; label: string; shortLabel: string; icon: typeof Bot }[] = [
   {
     id: "argus",
-    label: "A.R.G.U.S. Engine",
-    shortLabel: "MICROSERVICE 01",
+    label: "A.R.G.U.S.",
+    shortLabel: "BROWSER AGENT",
     icon: Bot,
   },
   {
     id: "llm-gateway",
-    label: "LLM Gateway Proxy",
-    shortLabel: "MICROSERVICE 02",
+    label: "Edu-filter",
+    shortLabel: "YOUTUBE FILTER",
     icon: Route,
   },
   {
     id: "rag-sandbox",
-    label: "RAG Eval Sandbox",
-    shortLabel: "MICROSERVICE 03",
+    label: "SIH RAG Assistant",
+    shortLabel: "RAG CHATBOT",
     icon: Search,
   },
   {
     id: "graph-validator",
-    label: "Graph Validator",
-    shortLabel: "MICROSERVICE 04",
+    label: "HR Workflow Designer",
+    shortLabel: "GRAPH ENGINE",
     icon: GitFork,
   },
 ];
@@ -38,7 +38,7 @@ export function ProjectTabs() {
     <aside className="w-full md:w-52 md:min-w-52 border-b md:border-b-0 md:border-r border-border bg-surface-alt flex flex-col select-none shrink-0">
       <div className="hidden md:block px-3 py-2 border-b border-border">
         <span className="text-[10px] text-dim uppercase tracking-widest font-mono">
-          SYSTEM MICROSERVICES
+          PROJECTS
         </span>
       </div>
 

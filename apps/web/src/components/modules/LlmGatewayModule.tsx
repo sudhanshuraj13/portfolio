@@ -50,10 +50,10 @@ export function LlmGatewayModule() {
         >
           <div className="flex items-center gap-2 mb-1">
             <span className="text-[10px] font-mono text-amber bg-amber/10 px-1.5 py-0.5 rounded">
-              MICROSERVICE 02
+              EDU-FILTER
             </span>
             <h2 className="text-sm font-semibold text-primary group-hover:text-amber transition-colors">
-              YouTube AI Focus Agent
+              Edu-filter — YouTube AI Focus Agent
             </h2>
           </div>
           <ChevronDown size={14} className={`text-dim transition-transform duration-300 ${isExpanded ? "rotate-180" : ""}`} />

@@ -52,7 +52,7 @@ async function main() {
         timestamp: new Date().toISOString(),
         level: "SYSTEM",
         source: "CORE",
-        message: "WebSocket connection established. System Registry online.",
+        message: "WebSocket connection established. Portfolio backend connected.",
       })
     );
   });

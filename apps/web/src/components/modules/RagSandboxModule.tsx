@@ -49,7 +49,7 @@ export function RagSandboxModule() {
         >
           <div className="flex items-center gap-2 mb-1">
             <span className="text-[10px] font-mono text-info bg-info/10 px-1.5 py-0.5 rounded">
-              MICROSERVICE 03
+              SIH RAG ASSISTANT
             </span>
             <h2 className="text-sm font-semibold text-primary group-hover:text-info transition-colors">
               SIH Assistant — Smart India Hackathon RAG Chatbot

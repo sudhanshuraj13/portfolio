@@ -13,16 +13,18 @@ const jetBrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Sudhanshu Raj | AI & Backend Engineer — System Registry",
+  title: "Sudhanshu Raj | AI & Backend Engineer",
   description:
-    "AI-Orchestrated System Registry & Log Console. Specializing in multi-agent orchestration, LLM inference routing, and high-availability backend systems.",
+    "AI and Backend Engineer specializing in RAG pipelines, LangGraph multi-agent orchestration, and production backend systems in TypeScript, Node.js, and Python.",
   keywords: [
     "AI Engineer",
     "Backend Engineer",
-    "LLM",
-    "Multi-Agent",
-    "Fastify",
+    "RAG",
+    "LangGraph",
+    "Multi-Agent Orchestration",
     "TypeScript",
+    "Node.js",
+    "Python",
     "Portfolio",
   ],
 };
@@ -35,9 +37,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${jetBrainsMono.variable} h-full antialiased`}
+      className={`${inter.variable} ${jetBrainsMono.variable} antialiased`}
     >
-      <body className="h-full w-full overflow-hidden flex flex-col font-sans bg-base text-primary">
+      <body className="w-full font-sans bg-base text-primary">
         {children}
       </body>
     </html>

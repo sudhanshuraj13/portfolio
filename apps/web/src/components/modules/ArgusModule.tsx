@@ -74,7 +74,7 @@ export function ArgusModule() {
         >
           <div className="flex items-center gap-2 mb-1">
             <span className="text-[10px] font-mono text-terminal-green bg-terminal-green/10 px-1.5 py-0.5 rounded">
-              MICROSERVICE 01
+              A.R.G.U.S.
             </span>
             <h2 className="text-sm font-semibold text-primary group-hover:text-terminal-green transition-colors">
               A.R.G.U.S. Agentic Web Automation Engine

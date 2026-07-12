@@ -87,7 +87,7 @@ export function GraphValidatorModule() {
         >
           <div className="flex items-center gap-2 mb-1">
             <span className="text-[10px] font-mono text-error bg-error/10 px-1.5 py-0.5 rounded">
-              MICROSERVICE 04
+              HR WORKFLOW DESIGNER
             </span>
             <h2 className="text-sm font-semibold text-primary group-hover:text-error transition-colors">
               HR Workflow Designer

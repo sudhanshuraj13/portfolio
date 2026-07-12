@@ -1,47 +1,51 @@
-# Sudhanshu Raj — Enterprise AI Operations Platform
+# Sudhanshu Raj — AI & Backend Engineer Portfolio
 
-Welcome to the backend architecture showcase of my portfolio! 
+Personal portfolio website showcasing AI engineering and backend development projects.
 
-I built this **Enterprise AI Operations Platform** to demonstrate production-grade backend engineering, microservices architecture, and real-time observability for senior engineering roles.
+Built with a **terminal/system-monitor aesthetic** — dark theme, monospace accents, live WebSocket trace panels — to reflect the kind of systems I build.
 
-Rather than a simple CRUD application, this platform simulates a high-throughput, event-driven enterprise environment.
+## Projects
 
-## 🚀 Architectural Overview
+### SIH RAG Assistant
+A RAG chatbot for the Smart India Hackathon knowledge base. Hybrid retrieval combines regex-based exact problem-ID matching with Vectra vector search (MiniLM-L6-v2 embeddings). Groq Llama 3.3 70B inference with real-time token streaming via Vercel AI SDK v6.
 
-This system is designed as a decoupled `pnpm` monorepo, separating the client-facing dashboard from the heavy AI execution workers.
+**Stack:** Next.js 16, TypeScript, AI SDK v6, Groq, Vectra, Xenova Transformers
+**Repo:** [sudhanshuraj13/sih_chat](https://github.com/sudhanshuraj13/sih_chat) · [Live Demo](https://sihchatbot-kappa.vercel.app/)
 
-Instead of traditional synchronous HTTP APIs that block and time out during long LLM generations, this architecture is completely **asynchronous and event-driven**:
-1. The **Next.js frontend** dispatches tasks to a distributed execution queue.
-2. The **Fastify worker pool** (consumer) asynchronously processes these jobs via **BullMQ / Redis**.
-3. As the workers execute complex AI microservices, they stream granular execution traces and latency metrics back to the frontend in real-time via **WebSockets**.
+### A.R.G.U.S.
+Voice-first AI browser automation agent. LangGraph-orchestrated pipeline converts voice commands into typed automation actions via a custom DOM runtime injected through Chrome extension content scripts.
 
-## 🧠 Core Microservices
+**Stack:** TypeScript, React 18, Plasmo (MV3), LangGraph, AgentQL
+**Repo:** [sudhanshuraj13/A.R.G.U.S](https://github.com/sudhanshuraj13/A.R.G.U.S)
 
-I engineered four distinct AI microservices that operate entirely in the background:
+### Edu-filter
+Chrome extension that classifies YouTube video titles as educational or distracting via multi-provider LLM support (OpenAI, Groq, Mistral), showing/hiding videos in real time.
 
-- **A.R.G.U.S (Automated Risk Guard & Understanding System):**
-  An autonomous stateful agent powered by LangGraph. It extracts intents from commands, dispatches web searches, and evaluates payload risk levels before execution.
-- **LLM Gateway:**
-  A resilient model router acting as a reverse-proxy for the Google Gemini API, handling context injection, persona enforcement, and latency tracking.
-- **Local RAG Sandbox:**
-  A two-lane hybrid search architecture. It combines fast regex exact matching with local semantic similarity scoring, eliminating external embedding API costs and rate limits.
-- **Graph Validator:**
-  A directed acyclic graph (DAG) topological traversal engine that dynamically validates organizational workflows for dead-ends and cyclic dependencies.
+**Stack:** Chrome Extension (Manifest V3), DOM Parsing, Multi-Provider LLM
+**Repo:** [sudhanshuraj13/Edu-filter](https://github.com/sudhanshuraj13/Edu-filter)
 
-## 🛠️ Technology Stack
+### HR Workflow Designer
+Graph-based validation and simulation engine for organizational workflows — cycle detection, missing-link checks, and Start/End placement rules with a React Flow canvas.
 
-- **Backend:** Node.js, Fastify, TypeScript
+**Stack:** Next.js 15, React 19, TypeScript, React Flow
+**Repo:** [sudhanshuraj13/hr-workflow-designer](https://github.com/sudhanshuraj13/hr-workflow-designer) · [Live Demo](https://hr-workflow-designer-production.up.railway.app/)
+
+## Portfolio Site Tech Stack
+
 - **Frontend:** Next.js 16 (App Router), Tailwind CSS v4, Zustand
+- **Backend:** Node.js, Fastify, TypeScript
 - **Database & ORM:** PostgreSQL (via Supabase) & Prisma
-- **Message Broker:** Redis (via Upstash) & BullMQ
+- **Message Queue:** Redis (via Upstash) & BullMQ
 - **Real-Time:** `@fastify/websocket`
-- **AI Integration:** Google Gemini (`@google/genai`)
+- **AI Chat:** Google Gemini (`@google/genai`)
 
-## 📊 Telemetry & Observability
+## Structure
 
-Enterprise systems require strict observability. Every microservice in this platform generates standard `SystemLog` objects that include a `trace_id`, execution `latency_ms`, and `risk_level`. 
-
-These logs are both persisted to the PostgreSQL database for historical analytics and broadcasted over WebSockets for real-time monitoring in the dashboard's "Live Traces" panel—simulating a Datadog-style observability suite.
+```
+apps/
+  web/     → Next.js frontend (portfolio pages + interactive console demos)
+  server/  → Fastify backend (WebSocket log streaming, job queue, AI chat)
+```
 
 ---
 
